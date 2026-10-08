@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Datang di Picniq Land — Wisata Piknik Alam</title>
+  <meta name="description" content="Picniq Land: paket wisata piknik keluarga, romantis, hutan pinus, danau, kebun teh dan ulang tahun di alam terbuka.">
+  <style>
+    :root {
+      --green: #2f6b3f;
+      --green-dark: #1f4a2c;
+      --orange: #f08a24;
+      --orange-dark: #d6700f;
+      --cream: #fbf7ef;
+      --text: #263128;
+      --muted: #5f6d62;
+      --line: #e5ddcc;
+      --radius: 12px;
+      --shadow: 0 6px 20px rgba(31, 74, 44, .12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      background: var(--cream) url('images/bg-tugu-jogja.jpg') no-repeat center top / cover fixed;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .container { width: min(1150px, 92%); margin-inline: auto; }
+
+    /* ===== Judul ===== */
+    .page-title { text-align: center; padding: 1.6rem 0 1rem; }
+    .page-title h1 { font-size: clamp(1.5rem, 3.5vw, 2.3rem); color: var(--green-dark); }
+    .page-title p { color: var(--muted); }
+
+    /* ===== Banner foto kegiatan ===== */
+    .banner { position: relative; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; box-shadow: var(--shadow); }
+    .banner-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(2, clamp(150px, 22vw, 260px));
+      gap: 3px;
+      background: #fff;
+    }
+    .banner-grid img {
+      width: 100%; height: 100%; object-fit: cover;
+      background: linear-gradient(135deg, #a9cf9b, #e9d9a8);
+    }
+    .banner-grid img:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; object-position: center 60%; }
+    .banner-grid img:nth-child(2) { grid-column: 3 / 5; grid-row: 1 / 3; }
+    .banner-grid img:nth-child(3) { grid-column: 5 / 7; grid-row: 1; }
+    .banner-grid img:nth-child(4) { grid-column: 5; grid-row: 2; }
+    .banner-grid img:nth-child(5) { grid-column: 6; grid-row: 2; }
+    .banner-overlay {
+      background: var(--green-dark); color: #fff; padding: 1rem 1.5rem;
+    }
+    .banner-overlay > div { display: flex; align-items: center; justify-content: space-between; gap: .5rem 1.5rem; flex-wrap: wrap; }
+    .banner-overlay h2 {
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+      line-height: 1.15;
+    }
+    .banner-overlay h2 span { color: #ffc46b; }
+    .banner-overlay p { font-size: clamp(.85rem, 1.6vw, 1.05rem); text-shadow: 0 2px 8px rgba(0, 0, 0, .6); margin-top: .2rem; }
+    .banner-overlay .btn { margin-top: .7rem; }
+
+    .btn {
+      display: inline-block; background: var(--orange); color: #fff;
+      padding: .6rem 1.3rem; border-radius: 99px; font-weight: 700; border: 0; cursor: pointer;
+      font: inherit; font-weight: 700; transition: background .2s, transform .2s;
+    }
+    .btn:hover { background: var(--orange-dark); transform: translateY(-2px); }
+    .btn:focus-visible, .menu a:focus-visible, .menu-toggle:focus-visible, .video-box button:focus-visible {
+      outline: 3px solid #fff; outline-offset: -3px; box-shadow: 0 0 0 3px var(--green-dark);
+    }
+
+    /* ===== Menu aplikasi (bar oranye) ===== */
+    .menu-bar { position: sticky; top: 0; z-index: 50; background: var(--orange); border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow); }
+    .menu-bar .inner { display: flex; align-items: center; justify-content: space-between; }
+    .menu { display: flex; flex-wrap: wrap; list-style: none; }
+    .menu a {
+      display: block; padding: .85rem 1.2rem; color: #fff; font-weight: 700;
+      font-size: .9rem; text-transform: uppercase; letter-spacing: .5px; transition: background .2s;
+    }
+    .menu a:hover, .menu a.active { background: var(--orange-dark); }
+    .menu-toggle { display: none; background: none; border: 0; color: #fff; font-size: 1.5rem; padding: .5rem 1rem; cursor: pointer; }
+    .menu-label { display: none; color: #fff; font-weight: 700; padding-left: 1rem; }
+
+    /* ===== Layout konten ===== */
+    .content { display: grid; grid-template-columns: 1fr 340px; gap: 1.8rem; padding: 2.2rem 0 3rem; align-items: start; }
+    .section-heading { font-size: 1.5rem; color: var(--green-dark); margin-bottom: 1rem; border-left: 5px solid var(--orange); padding-left: .7rem; }
+
+    /* ===== Daftar paket wisata ===== */
+    .packages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; }
+    .pkg {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      overflow: hidden; display: flex; flex-direction: column; transition: transform .25s, box-shadow .25s;
+    }
+    .pkg:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .pkg img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: linear-gradient(135deg, #a9cf9b, #e9d9a8); }
+    .pkg-body { padding: .9rem 1rem 1.1rem; display: flex; flex-direction: column; gap: .4rem; flex: 1; }
+    .pkg h3 { font-size: 1.02rem; color: var(--green-dark); line-height: 1.3; }
+    .pkg p { font-size: .88rem; color: var(--muted); flex: 1; }
+    .pkg .meta { font-size: .8rem; color: var(--muted); }
+    .pkg .price { font-weight: 800; color: var(--orange-dark); }
+    .pkg .btn { text-align: center; font-size: .85rem; padding: .5rem 1rem; margin-top: .3rem; }
+    .pkg-ph { aspect-ratio: 4 / 3; display: grid; place-items: center; background: var(--ph, linear-gradient(135deg, #a9cf9b, #e9d9a8)); font-size: 3.5rem; }
+    .category-divider { margin: 2rem 0 1rem; padding-bottom: .5rem; border-bottom: 2px dashed var(--line); }
+    .category-divider:first-of-type { margin-top: 1.2rem; }
+    .category-divider h3 { font-size: 1.15rem; color: var(--green-dark); display: flex; align-items: center; gap: .5rem; }
+    .more-info-box {
+      margin-top: 1.8rem; background: #fff; border: 1px solid var(--line);
+      border-left: 5px solid var(--orange); border-radius: var(--radius);
+      padding: 1.2rem 1.4rem; box-shadow: 0 4px 14px rgba(0, 0, 0, .05);
+    }
+    .more-info-box h3 { font-size: 1.15rem; color: var(--green-dark); margin-bottom: .4rem; letter-spacing: .5px; }
+    .more-info-box p { font-size: .95rem; color: var(--muted); line-height: 1.5; }
+    .more-info-box .btn-row { margin-top: .8rem; display: flex; gap: .7rem; flex-wrap: wrap; }
+
+    /* ===== Sidebar ===== */
+    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; position: sticky; top: 70px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; }
+    .card h3 { color: var(--green-dark); margin-bottom: .7rem; font-size: 1.1rem; }
+    .video-box { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; }
+    .video-box img, .video-box iframe { width: 100%; height: 100%; object-fit: cover; border: 0; }
+    .video-box button {
+      position: absolute; inset: 0; width: 100%; border: 0; cursor: pointer;
+      background: rgba(0, 0, 0, .25); display: grid; place-items: center; transition: background .2s;
+    }
+    .video-box button:hover { background: rgba(0, 0, 0, .1); }
+    .play {
+      width: 64px; height: 44px; background: #f00; border-radius: 12px; position: relative;
+    }
+    .play::after {
+      content: ""; position: absolute; left: 26px; top: 12px;
+      border-left: 16px solid #fff; border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+    }
+    .video-caption { font-size: .85rem; color: var(--muted); margin-top: .6rem; }
+    .info-list { list-style: none; display: grid; gap: .5rem; font-size: .92rem; }
+
+    /* ===== Tiket ===== */
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .pkg-ticket { grid-column: 1 / -1; border-color: var(--orange); border-width: 2px; }
+    .pkg-ticket:hover { transform: none; }
+    .ticket-wrap { display: grid; gap: 1rem; margin-top: .3rem; }
+    .table-scroll { overflow-x: auto; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+    .ticket-table { width: 100%; border-collapse: collapse; min-width: 420px; }
+    .ticket-table th, .ticket-table td { padding: .85rem 1rem; text-align: left; border-bottom: 1px solid var(--line); }
+    .ticket-table thead th { background: var(--green-dark); color: #fff; font-size: .9rem; }
+    .ticket-table tbody th { color: var(--green-dark); font-weight: 700; }
+    .ticket-table tbody tr:last-child th, .ticket-table tbody tr:last-child td { border-bottom: 0; }
+    .ticket-table tbody tr:nth-child(even) { background: #faf5ea; }
+    .ticket-table .price { font-weight: 800; color: var(--orange-dark); white-space: nowrap; }
+    .ticket-perks { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .perk { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem; border-radius: var(--radius); border: 1px solid var(--line); background: #fff; }
+    .perk-icon { font-size: 2rem; }
+    .perk strong { display: block; font-size: 1.25rem; color: var(--green-dark); }
+    .perk.disc strong { color: var(--orange-dark); }
+    .perk p { color: var(--muted); font-size: .92rem; }
+    @media (max-width: 800px) { .ticket-wrap { grid-template-columns: 1fr; } }
+
+    /* ===== Galeri ===== */
+    .gallery-section { padding-bottom: 3rem; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .8rem; }
+    .gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; transition: transform .3s; background: #cfe0c3; }
+    .gallery img:hover { transform: scale(1.03); }
+
+    /* ===== Kontak & Footer ===== */
+    .contact { background: var(--green-dark); color: #e8f2ea; padding: 2.5rem 0; }
+    .contact .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .contact h3 { color: #ffc46b; margin-bottom: .5rem; }
+    .contact a { text-decoration: underline; }
+    .copyright { background: #163520; color: #a9c4b0; text-align: center; padding: .9rem; font-size: .85rem; }
+
+    /* ===== Responsif ===== */
+    @media (max-width: 900px) {
+      .content { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+    @media (max-width: 700px) {
+      .banner-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: none; grid-auto-rows: 200px; }
+      .banner-grid img:nth-child(n) { grid-column: auto; grid-row: auto; }
+      .banner-grid img:nth-child(3) { grid-column: 1 / -1; }
+      .banner-overlay { position: static; background: var(--green-dark); padding: 1.2rem 1rem; }
+      .menu-toggle { display: block; }
+      .menu-label { display: block; }
+      .menu { display: none; width: 100%; flex-direction: column; }
+      .menu.open { display: flex; }
+      .menu-bar .inner { flex-wrap: wrap; }
+      .menu a { border-top: 1px solid rgba(255, 255, 255, .25); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Judul halaman -->
+  <header class="page-title container">
+    <h1>Selamat Datang di Wisata Picniq Land</h1>
+    <p>Piknik santai, estetik &amp; tanpa repot di alam terbuka</p>
+  </header>
+
+  <!-- Banner: foto-foto kegiatan wisata -->
+  <div class="container">
+    <section class="banner" aria-label="Foto kegiatan wisata">
+      <div class="banner-grid">
+        <img src="images/wisata-1.jpg" alt="Foto bersama di cermin cembung dengan latar bangunan Colosseum dan jembatan merah" width="768" height="1024">
+        <img src="images/wisata-2.jpg" alt="Bangunan replika Colosseum dengan poster-poster di bawahnya" width="768" height="1024">
+        <img src="images/wisata-3.jpg" alt="Patung King Kong di jembatan merah saat senja" width="320" height="180">
+        <img src="images/wisata-4.jpg" alt="Pemandangan udara kawasan wisata dan perbukitan" width="640" height="360">
+        <img src="images/wisata-5.jpg" alt="Suasana kawasan wisata di sore hari dengan lampu-lampu" width="640" height="364">
+      </div>
+      <div class="banner-overlay">
+        <div>
+          <h2>Picniq <span>Land</span></h2>
+          <p>Nikmati alam, tawa, dan kebersamaan bersama orang tersayang</p>
+          <a href="#paket" class="btn">Lihat Wahana &amp; Layanan</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Menu aplikasi -->
+  <div class="container">
+    <nav class="menu-bar" aria-label="Menu utama">
+      <div class="inner">
+        <span class="menu-label">MENU</span>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Buka menu">☰</button>
+        <ul class="menu" id="menu">
+          <li><a href="#beranda" class="active">Beranda</a></li>
+          <li><a href="#paket">Wahana &amp; Layanan</a></li>
+          <li><a href="#video">Video</a></li>
+          <li><a href="#galeri">Galeri</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <main class="container content" id="beranda">
+    <!-- Daftar wahana, spot, dan layanan wisata -->
+    <section id="paket" aria-labelledby="judul-paket">
+      <h2 class="section-heading" id="judul-paket">Wahana &amp; Layanan Wisata</h2>
+      
+      <div class="packages-grid">
+        <article class="pkg pkg-ticket">
+          <div class="pkg-body">
+            <h3>Paket Tiket Masuk Reguler</h3>
+            <p>Harga tiket masuk per orang sesuai hari dan waktu kunjungan.</p>
+            <div class="ticket-wrap">
+              <div class="table-scroll">
+                <table class="ticket-table">
+                  <caption class="visually-hidden">Daftar harga tiket masuk reguler per orang</caption>
+                  <thead>
+                    <tr><th scope="col">Hari &amp; Waktu</th><th scope="col">Jam</th><th scope="col">Harga / orang</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row">Weekday Pagi</th><td>08:00 – 16:00 WIB</td><td class="price">Rp35.000</td></tr>
+                    <tr><th scope="row">Weekday Sore</th><td>16:00 – 20:00 / 21:00 WIB</td><td class="price">Rp40.000</td></tr>
+                    <tr><th scope="row">Weekend Pagi</th><td>08:00 – 16:00 WIB</td><td class="price">Rp40.000</td></tr>
+                    <tr><th scope="row">Weekend Sore</th><td>16:00 – 21:00 WIB</td><td class="price">Rp50.000</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-perks">
+                <div class="perk free">
+                  <span class="perk-icon" aria-hidden="true">👶</span>
+                  <div><strong>GRATIS</strong><p>Anak-anak di bawah 5 tahun</p></div>
+                </div>
+                <div class="perk disc">
+                  <span class="perk-icon" aria-hidden="true">👴</span>
+                  <div><strong>Diskon 50%</strong><p>Lansia di atas 65 tahun</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Kategori 1: Wahana Permainan & Hiburan -->
+      <div class="category-divider">
+        <h3>🎡 Wahana Permainan &amp; Hiburan</h3>
+      </div>
+      <div class="packages-grid">
+
+        <article class="pkg">
+          <img src="images/cinema-7d.jpg" alt="Suasana bioskop dengan deretan kursi merah dan layar lebar" loading="lazy" width="640" height="480">
+          <div class="pkg-body">
+            <h3>Bioskop 7 Dimensi (Cinema 7D)</h3>
+            <p>Sensasi menonton film interaktif dengan efek gerak, visual spektakuler, dan simulasi 7 dimensi yang seru dan memacu adrenalin.</p>
+            <span class="meta">🎬 Efek gerak &amp; visual interaktif</span>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Kategori 2: Wahana Kendaraan Keliling -->
+      <div class="category-divider">
+        <h3>🚲 Wahana Kendaraan Keliling</h3>
+      </div>
+      <div class="packages-grid">
+
+        <article class="pkg">
+          <img src="images/wisata-4.jpg" alt="Mobil listrik dan dino listrik untuk anak-anak berkeliling area" loading="lazy" width="640" height="480">
+          <div class="pkg-body">
+            <h3>Mobil Listrik &amp; Dino Listrik</h3>
+            <p>Kendaraan listrik bertema dinosaurus dan mobil mini yang ramah dan seru untuk anak-anak atau berkeliling seluruh area wisata.</p>
+            <span class="meta">🚗 Mobil listrik · 🦖 Dino listrik anak</span>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Kategori 3: Spot Foto Premium & Layanan Tambahan -->
+      <div class="category-divider">
+        <h3>📸 Spot Foto Premium &amp; Layanan Tambahan</h3>
+      </div>
+      <div class="packages-grid">
+
+        <article class="pkg">
+          <img src="images/zona-ikon-dunia.jpg" alt="Spot foto tematik di kawasan wisata" loading="lazy" width="640" height="480">
+          <div class="pkg-body">
+            <h3>Spot Foto Tematik Tertentu</h3>
+            <p>Spot foto tematik khusus di luar area gratis. Bisa diakses gratis dengan syarat tertentu seperti memberikan ulasan di Google!</p>
+            <span class="price">Rp10.000 – Rp20.000 <small style="display:block;font-size:.8rem;font-weight:normal;color:var(--muted)">per spot (atau Gratis dgn ulasan Google)</small></span>
+            <span class="meta">📸 Spot tematik instagramable</span>
+          </div>
+        </article>
+
+        <article class="pkg">
+          <img src="images/wisata-1.jpg" alt="Paket sewa fotografer di kawasan wisata" loading="lazy" width="640" height="480">
+          <div class="pkg-body">
+            <h3>Paket Sewa Fotografer</h3>
+            <p>Jasa fotografer profesional untuk mengabadikan momen spesial Anda, dengan durasi dan pilihan paket seperti Quick &amp; Cheap atau sesi di Infinity Pool.</p>
+            <span class="price">Mulai Rp20.000 <small style="display:block;font-size:.8rem;font-weight:normal;color:var(--muted)">paket Quick &amp; Cheap / Infinity Pool</small></span>
+            <span class="meta">📷 Fotografer profesional</span>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Info Lebih Lanjut -->
+      <div class="more-info-box">
+        <h3>INFO LEBIH LANJUT</h3>
+        <p>Untuk keterangan yang jelas silahkan hubungi kontak yang ada atau langsung datang ke wisata Pictniq Land Jogja.</p>
+        <div class="btn-row">
+          <a class="btn" href="https://wa.me/6282311118807?text=Halo%20Pictniq%20Land%2C%20saya%20ingin%20tanya%20informasi%20wisata%20lebih%20lanjut" target="_blank" rel="noopener">WhatsApp: 082311118807</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sidebar: link video YouTube -->
+    <aside class="sidebar">
+      <section class="card" id="video" aria-labelledby="judul-video">
+        <h3 id="judul-video">Video Aktivitas Wisata</h3>
+        <div class="video-box" id="videoBox">
+          <iframe src="https://www.youtube.com/embed/H0kl8-NOCPQ" title="Video Aktivitas Wisata Wiasa Picnic" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <p class="video-caption">Lihat keseruan piknik di Wiasa Picnic. <a href="https://youtu.be/H0kl8-NOCPQ" target="_blank" rel="noopener">Tonton di YouTube</a>.</p>
+      </section>
+
+      <section class="card">
+        <h3>Informasi Wisata</h3>
+        <ul class="info-list">
+          <li>🕘 Buka setiap hari 08.00 – 21.00 WIB <small>(jam tutup dapat menyesuaikan akhir pekan atau hari libur)</small></li>
+          <li>📍 Jl. Ngoro Ngoro Ombo, Ngandong, Patuk, Kec. Patuk, Kabupaten Gunungkidul, Daerah Istimewa Yogyakarta 55862</li>
+          <li>📞 <a href="tel:+6282311118807">0823-1111-8807</a></li>
+          <li>✅ Sudah termasuk alat &amp; dekorasi</li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+  <!-- Galeri -->
+  <section class="container gallery-section" id="galeri" aria-labelledby="judul-galeri">
+    <h2 class="section-heading" id="judul-galeri">Galeri Kegiatan</h2>
+    <div class="gallery">
+      <img src="images/wisata-1.jpg" alt="Foto bersama di cermin cembung dengan latar bangunan Colosseum" loading="lazy" width="400" height="400">
+      <img src="images/wisata-2.jpg" alt="Bangunan replika Colosseum dengan poster-poster di bawahnya" loading="lazy" width="400" height="400">
+      <img src="images/wisata-3.jpg" alt="Replika Arc de Triomphe putih di bawah langit biru dengan daun pohon willow menjuntai" loading="lazy" width="400" height="400">
+      <img src="images/wisata-4.jpg" alt="Deretan pohon palem dan area kuliner berwarna cerah dengan wahana dinosaurus mini" loading="lazy" width="400" height="400">
+      <img src="images/wisata-5.jpg" alt="Jembatan gantung merah dengan patung King Kong dan gerbang torii di kawasan wisata" loading="lazy" width="400" height="400">
+    </div>
+  </section>
+
+  <!-- Kontak -->
+  <footer>
+    <section class="contact" id="kontak">
+      <div class="container grid">
+        <div>
+          <h3>Wiasa Picnic</h3>
+          <p>Wisata piknik alam yang nyaman, estetik, dan ramah keluarga.</p>
+        </div>
+        <div>
+          <h3>Hubungi Kami</h3>
+          <p>WhatsApp: <a href="https://wa.me/6282311118807" target="_blank" rel="noopener">0823-1111-8807</a></p>
+          <p>Email: <a href="mailto:halo@wiasapicnic.id">halo@wiasapicnic.id</a></p>
+          <p>Alamat: Jl. Ngoro Ngoro Ombo, Ngandong, Patuk, Kec. Patuk, Kabupaten Gunungkidul, Daerah Istimewa Yogyakarta 55862</p>
+        </div>
+        <div>
+          <h3>Jam Operasional</h3>
+          <p>Setiap hari, 08.00 – 21.00 WIB</p>
+          <p>Jam tutup dapat menyesuaikan akhir pekan atau hari libur.</p>
+        </div>
+      </div>
+    </section>
+    <div class="copyright">© 2026 Wiasa Picnic. Tugas Pertemuan 3 — Antarmuka Promosi Wisata.</div>
+  </footer>
+
+  <script>
+    // Menu mobile
+    const toggle = document.querySelector(".menu-toggle");
+    const menu = document.getElementById("menu");
+    toggle.addEventListener("click", () => {
+      const open = menu.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open);
+    });
+    menu.addEventListener("click", (e) => {
+      if (e.target.closest("a")) { menu.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); }
+    });
+
+    // Tandai menu aktif saat scroll
+    const links = [...menu.querySelectorAll("a")];
+    const targets = links.map(a => document.querySelector(a.getAttribute("href")));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + en.target.id));
+        }
+      });
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    targets.forEach(t => t && io.observe(t));
+  </script>
+</body>
+</html>
